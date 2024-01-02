@@ -1,0 +1,22 @@
+{
+  "contacts": [
+    {
+      "id": 1,
+      "name": "Pasang",
+      "number": "9825789573",
+      "important": true
+    },
+    {
+      "id": 2,
+      "name": "Sid",
+      "number": "9825789573",
+      "important": true
+    },
+    {
+      "id": 3,
+      "name": "Pasang",
+      "number": "9825789573",
+      "important": true
+    }
+  ]
+}
