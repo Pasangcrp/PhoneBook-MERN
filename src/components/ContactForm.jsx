@@ -1,4 +1,5 @@
 const ContactForm = ({
+  contacts,
   newName,
   setNewName,
   newPhone,
@@ -15,7 +16,10 @@ const ContactForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleFormSubmit({ name: newName, number: newPhone });
+
+    const newId = contacts.length + 1;
+
+    handleFormSubmit({ id: newId, name: newName, number: newPhone });
   };
 
   return (

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchBar from "./components/SearchBar";
-import ContactForm from "./components/contactForm";
+import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 
 const App = () => {
@@ -24,12 +24,11 @@ const App = () => {
   }, []);
 
   const searchContacts = (input) => {
-    // Modified to receive input directly
     const lowerCaseSearchInput = input.toLowerCase();
 
     if (lowerCaseSearchInput) {
-      const filtered = contacts.filter((c) =>
-        c.name.toLowerCase().includes(lowerCaseSearchInput)
+      const filtered = contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(lowerCaseSearchInput)
       );
       setFilteredContacts(filtered);
     } else {
@@ -38,7 +37,6 @@ const App = () => {
   };
 
   const handleFormSubmit = (contact) => {
-    // Modified to receive contact directly
     const contactExists = contacts.some(
       (c) => c.name.toLowerCase() === contact.name.toLowerCase()
     );
@@ -54,6 +52,7 @@ const App = () => {
             ...prevFiltered,
             response.data,
           ]);
+
           setNewName("");
           setNewPhone("");
           setSearchInput("");
@@ -73,6 +72,7 @@ const App = () => {
         searchContacts={searchContacts}
       />
       <ContactForm
+        contacts={contacts}
         newName={newName}
         setNewName={setNewName}
         newPhone={newPhone}

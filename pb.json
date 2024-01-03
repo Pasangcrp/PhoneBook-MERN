@@ -21,27 +21,12 @@
     {
       "id": 4,
       "name": "Subrat",
-<<<<<<< HEAD
-      "number": "9824550005",
-      "id": 4
-    },
-    {
-      "name": "Kiran",
-      "number": "982029383",
-      "id": 5
-    },
-    {
-      "name": "sss",
-      "number": "222",
-      "id": 6
-=======
       "number": "9824550005"
     },
     {
       "id": 5,
       "name": "Kiran",
       "number": "982029383"
->>>>>>> dev
     }
   ]
 }
