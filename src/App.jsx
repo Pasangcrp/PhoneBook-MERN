@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchBar from "./components/SearchBar";
-import ContactForm from "./components/contactForm";
+import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 
 const App = () => {
@@ -24,7 +24,6 @@ const App = () => {
   }, []);
 
   const searchContacts = (input) => {
-    // Modified to receive input directly
     const lowerCaseSearchInput = input.toLowerCase();
 
     if (lowerCaseSearchInput) {
@@ -38,7 +37,6 @@ const App = () => {
   };
 
   const handleFormSubmit = (contact) => {
-    // Modified to receive contact directly
     const contactExists = contacts.some(
       (c) => c.name.toLowerCase() === contact.name.toLowerCase()
     );
