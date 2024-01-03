@@ -1,55 +1,87 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SearchBar from "./components/SearchBar";
+import ContactForm from "./components/contactForm";
+import ContactList from "./components/ContactList";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredContacts, setFilteredContacts] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/contacts").then((response) => {
-      setContacts(response.data);
-    });
+    axios
+      .get("http://localhost:3001/contacts")
+      .then((response) => {
+        setContacts(response.data);
+        setFilteredContacts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching contacts:", error.message);
+      });
   }, []);
 
-  const handleNameChange = (e) => {
-    setNewName(e.target.value);
+  const searchContacts = (input) => {
+    // Modified to receive input directly
+    const lowerCaseSearchInput = input.toLowerCase();
+
+    if (lowerCaseSearchInput) {
+      const filtered = contacts.filter((c) =>
+        c.name.toLowerCase().includes(lowerCaseSearchInput)
+      );
+      setFilteredContacts(filtered);
+    } else {
+      setFilteredContacts(contacts);
+    }
   };
 
-  const handlePhoneChange = (e) => {
-    setNewPhone(e.target.value);
-  };
+  const handleFormSubmit = (contact) => {
+    // Modified to receive contact directly
+    const contactExists = contacts.some(
+      (c) => c.name.toLowerCase() === contact.name.toLowerCase()
+    );
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const newContact = { name: newName, number: newPhone };
-
-    axios
-      .post("http://localhost:3001/contacts", newContact)
-      .then((response) => {
-        setContacts(contacts.concat(response.data));
-        setNewName("");
-        setNewPhone("");
-      });
+    if (contactExists) {
+      alert("Contact with the name already exists in the phonebook!");
+    } else {
+      axios
+        .post("http://localhost:3001/contacts", contact)
+        .then((response) => {
+          setContacts((prevContacts) => [...prevContacts, response.data]);
+          setFilteredContacts((prevFiltered) => [
+            ...prevFiltered,
+            response.data,
+          ]);
+          setNewName("");
+          setNewPhone("");
+          setSearchInput("");
+        })
+        .catch((error) => {
+          console.error("Error adding contact:", error.message);
+        });
+    }
   };
 
   return (
     <div>
       <h1>PhoneBook</h1>
-      <form onSubmit={handleFormSubmit}>
-        Name: <input type="text" value={newName} onChange={handleNameChange} />
-        Phone Number:{" "}
-        <input type="tel" value={newPhone} onChange={handlePhoneChange} />
-        <button type="submit">Add</button>
-      </form>
+      <SearchBar
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        searchContacts={searchContacts}
+      />
+      <ContactForm
+        newName={newName}
+        setNewName={setNewName}
+        newPhone={newPhone}
+        setNewPhone={setNewPhone}
+        handleFormSubmit={handleFormSubmit}
+      />
+
       <h2>Numbers:</h2>
-      <ul>
-        {contacts.map((contact, index) => (
-          <li key={index}>
-            {contact.name}: {contact.number}{" "}
-          </li>
-        ))}
-      </ul>
+      <ContactList contacts={filteredContacts} />
     </div>
   );
 };
