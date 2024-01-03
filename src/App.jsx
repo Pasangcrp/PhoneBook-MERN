@@ -43,6 +43,9 @@ const App = () => {
 
     if (contactExists) {
       alert("Contact with the name already exists in the phonebook!");
+      setNewName("");
+      setNewPhone("");
+      setSearchInput("");
     } else {
       axios
         .post("http://localhost:3001/contacts", contact)
