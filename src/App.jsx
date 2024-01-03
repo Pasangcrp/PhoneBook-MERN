@@ -27,8 +27,8 @@ const App = () => {
     const lowerCaseSearchInput = input.toLowerCase();
 
     if (lowerCaseSearchInput) {
-      const filtered = contacts.filter((c) =>
-        c.name.toLowerCase().includes(lowerCaseSearchInput)
+      const filtered = contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(lowerCaseSearchInput)
       );
       setFilteredContacts(filtered);
     } else {
@@ -52,6 +52,7 @@ const App = () => {
             ...prevFiltered,
             response.data,
           ]);
+
           setNewName("");
           setNewPhone("");
           setSearchInput("");
@@ -71,6 +72,7 @@ const App = () => {
         searchContacts={searchContacts}
       />
       <ContactForm
+        contacts={contacts}
         newName={newName}
         setNewName={setNewName}
         newPhone={newPhone}
