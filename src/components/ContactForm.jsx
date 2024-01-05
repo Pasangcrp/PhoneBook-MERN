@@ -19,7 +19,16 @@ const ContactForm = ({
 
     const newId = contacts.length + 1;
 
-    handleFormSubmit({ id: newId, name: newName, number: newPhone });
+    const newContact = { id: newId, name: newName, number: newPhone };
+
+    if (typeof newName === String) {
+      handleFormSubmit(newContact);
+      alert("Contact added successfully");
+    } else {
+      alert("Name is not valid");
+    }
+    setNewName("");
+    setNewPhone("");
   };
 
   return (
