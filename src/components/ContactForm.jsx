@@ -17,18 +17,30 @@ const ContactForm = ({
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newId = contacts.length + 1;
+    const onlyLettersRegex = /^[a-zA-Z]+$/;
 
-    const newContact = { id: newId, name: newName, number: newPhone };
+    if (!onlyLettersRegex.test(newName) || newName.trim() === "") {
+      alert("Name not valid");
+      setNewName("");
+      setNewPhone("");
+      return;
+    }
 
-    if (typeof newName === String) {
+    const contactExists = contacts.some(
+      (c) => c.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    if (contactExists) {
+      alert("Contact with the same name already exists in the phonebook!");
+      setNewName("");
+      setNewPhone("");
+    } else {
+      const newContact = { name: newName, number: newPhone };
       handleFormSubmit(newContact);
       alert("Contact added successfully");
-    } else {
-      alert("Name is not valid");
+      setNewName("");
+      setNewPhone("");
     }
-    setNewName("");
-    setNewPhone("");
   };
 
   return (

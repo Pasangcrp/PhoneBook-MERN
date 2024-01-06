@@ -37,33 +37,19 @@ const App = () => {
   };
 
   const handleFormSubmit = (contact) => {
-    const contactExists = contacts.some(
-      (c) => c.name.toLowerCase() === contact.name.toLowerCase()
-    );
+    axios
+      .post("http://localhost:3001/contacts", contact)
+      .then((response) => {
+        setContacts((prevContacts) => [...prevContacts, response.data]);
+        setFilteredContacts((prevFiltered) => [...prevFiltered, response.data]);
 
-    if (contactExists) {
-      alert("Contact with the name already exists in the phonebook!");
-      setNewName("");
-      setNewPhone("");
-      setSearchInput("");
-    } else {
-      axios
-        .post("http://localhost:3001/contacts", contact)
-        .then((response) => {
-          setContacts((prevContacts) => [...prevContacts, response.data]);
-          setFilteredContacts((prevFiltered) => [
-            ...prevFiltered,
-            response.data,
-          ]);
-
-          setNewName("");
-          setNewPhone("");
-          setSearchInput("");
-        })
-        .catch((error) => {
-          console.error("Error adding contact:", error.message);
-        });
-    }
+        setNewName("");
+        setNewPhone("");
+        setSearchInput("");
+      })
+      .catch((error) => {
+        console.error("Error adding contact:", error.message);
+      });
   };
 
   const deleteContact = (id) => {
