@@ -1,3 +1,4 @@
+import axios from "axios";
 const ContactForm = ({
   contacts,
   newName,
@@ -26,14 +27,32 @@ const ContactForm = ({
       return;
     }
 
-    const contactExists = contacts.some(
+    const existingContact = contacts.find(
       (c) => c.name.toLowerCase() === newName.toLowerCase()
     );
 
-    if (contactExists) {
-      alert("Contact with the same name already exists in the phonebook!");
-      setNewName("");
-      setNewPhone("");
+    if (existingContact) {
+      alert(
+        "Contact with the same name already exists in the phonebook and updating the contact"
+      );
+
+      axios
+        .put(`http://localhost:3001/contacts/${existingContact.id}`, {
+          name: newName,
+          number: newPhone,
+        })
+        .then((response) => {
+          const updatedContact = response.data;
+
+          handleFormSubmit(updatedContact);
+
+          alert("Contact updated successfully");
+          setNewName("");
+          setNewPhone("");
+        })
+        .catch((error) => {
+          console.error("Error updating contact:", error.message);
+        });
     } else {
       const newContact = { name: newName, number: newPhone };
       handleFormSubmit(newContact);

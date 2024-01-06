@@ -37,19 +37,54 @@ const App = () => {
   };
 
   const handleFormSubmit = (contact) => {
-    axios
-      .post("http://localhost:3001/contacts", contact)
-      .then((response) => {
-        setContacts((prevContacts) => [...prevContacts, response.data]);
-        setFilteredContacts((prevFiltered) => [...prevFiltered, response.data]);
+    const existingContact = contacts.find(
+      (c) => c.name.toLowerCase() === contact.name.toLowerCase()
+    );
 
-        setNewName("");
-        setNewPhone("");
-        setSearchInput("");
-      })
-      .catch((error) => {
-        console.error("Error adding contact:", error.message);
-      });
+    if (existingContact) {
+      axios
+        .put(`http://localhost:3001/contacts/${existingContact.id}`, contact)
+        .then((response) => {
+          const updatedContact = response.data;
+
+          setContacts((prevContacts) =>
+            prevContacts.map((c) =>
+              c.id === updatedContact.id ? updatedContact : c
+            )
+          );
+
+          setFilteredContacts((prevFiltered) =>
+            prevFiltered.map((c) =>
+              c.id === updatedContact.id ? updatedContact : c
+            )
+          );
+
+          // alert("Contact updated successfully");
+          setNewName("");
+          setNewPhone("");
+          setSearchInput("");
+        })
+        .catch((error) => {
+          console.error("Error updating contact:", error.message);
+        });
+    } else {
+      axios
+        .post("http://localhost:3001/contacts", contact)
+        .then((response) => {
+          const newContact = response.data;
+
+          setContacts((prevContacts) => [...prevContacts, newContact]);
+          setFilteredContacts((prevFiltered) => [...prevFiltered, newContact]);
+
+          alert("Contact added successfully");
+          setNewName("");
+          setNewPhone("");
+          setSearchInput("");
+        })
+        .catch((error) => {
+          console.error("Error adding contact:", error.message);
+        });
+    }
   };
 
   const deleteContact = (id) => {
