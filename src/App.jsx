@@ -66,6 +66,22 @@ const App = () => {
     }
   };
 
+  const deleteContact = (id) => {
+    axios
+      .delete(`http://localhost:3001/contacts/${id}`)
+      .then(() => {
+        setContacts((prevContacts) =>
+          prevContacts.filter((contact) => contact.id !== id)
+        );
+        setFilteredContacts((prevFiltered) =>
+          prevFiltered.filter((contact) => contact.id !== id)
+        );
+      })
+      .catch((error) => {
+        console.log("Error deleting contact", error);
+      });
+  };
+
   return (
     <div>
       <h1>PhoneBook</h1>
@@ -84,7 +100,7 @@ const App = () => {
       />
 
       <h2>Numbers:</h2>
-      <ContactList contacts={filteredContacts} />
+      <ContactList contacts={filteredContacts} deleteContact={deleteContact} />
     </div>
   );
 };
