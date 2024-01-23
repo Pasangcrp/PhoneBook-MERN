@@ -59,7 +59,6 @@ const App = () => {
             )
           );
 
-          // alert("Contact updated successfully");
           setNewName("");
           setNewPhone("");
           setSearchInput("");
